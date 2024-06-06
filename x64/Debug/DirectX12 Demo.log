@@ -1,0 +1,10 @@
+﻿  directx12.cpp
+F:\DirectX12 Demo\directx12.cpp(82,20): warning C4018: “<”: 有符号/无符号不匹配
+  graphics.cpp
+  main.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  renderpipeline.cpp
+  systemclass.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  正在生成代码...
+  DirectX12 Demo.vcxproj -> F:\DirectX12 Demo\x64\Debug\DirectX12 Demo.exe
