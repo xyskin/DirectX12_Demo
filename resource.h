@@ -16,6 +16,7 @@ public:
 	D3D12_RESOURCE_DESC* descPtr;
 	ID3D12Resource* resourcePtr;
 	D3D12_RESOURCE_BARRIER* barrierPtr;
+	D3D12_CPU_DESCRIPTOR_HANDLE handle;
 
 	void Release()
 	{
@@ -52,6 +53,11 @@ public:
 		barrierPtr->UAV.pResource = resourcePtr;
 
 		barrierPtr->Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	}
+
+	void SetHandle(D3D12_CPU_DESCRIPTOR_HANDLE handle)
+	{
+		this->handle = handle;
 	}
 };
 

@@ -12,7 +12,7 @@ public:
 	RenderPipeline(const RenderPipeline&);
 	~RenderPipeline();
 
-	bool Initialize(DirectX12Class*);
+	bool Initialize(const int&, const int&, const HWND&);
 	bool Render();
 	void Shutdown();
 private:
