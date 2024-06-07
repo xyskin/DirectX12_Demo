@@ -157,11 +157,13 @@ bool DirectX12Class::Initialize(const int& screenWidth , const int& screenHeight
 	ASSERT_HRESULT_SUCCESS(m_SwapChain->GetBuffer(0, IID_ID3D12Resource, (void**)&(m_BackBufferRenderTarget[0]->resourcePtr)));
 	m_Device->CreateRenderTargetView(m_BackBufferRenderTarget[0]->resourcePtr, NULL, renderTargetViewHandle);
 	m_BackBufferRenderTarget[0]->CreateBarrier();
+	m_BackBufferRenderTarget[0]->SetHandle(renderTargetViewHandle);
 
 	renderTargetViewHandle.ptr += renderTargetViewDescriptorSize;
 	ASSERT_HRESULT_SUCCESS(m_SwapChain->GetBuffer(1, IID_ID3D12Resource, (void**)&(m_BackBufferRenderTarget[1]->resourcePtr)));
 	m_Device->CreateRenderTargetView(m_BackBufferRenderTarget[1]->resourcePtr, NULL, renderTargetViewHandle);
 	m_BackBufferRenderTarget[1]->CreateBarrier();
+	m_BackBufferRenderTarget[1]->SetHandle(renderTargetViewHandle);
 
 	ASSERT_HRESULT_SUCCESS(m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_ID3D12CommandAllocator, (void**)&m_CommandAllocator));
 

@@ -3,7 +3,6 @@
 
 GraphicsClass::GraphicsClass()
 {
-	m_DirectX = 0;
 	m_Pipeline = 0;
 	m_Camera = 0;
 }
@@ -22,21 +21,13 @@ bool GraphicsClass::Initialize(const int& screenWidth, const int& screenHeight, 
 {
 	bool result;
 
-	m_DirectX = new DirectX12Class;
-	if (!m_DirectX)
-	{
-		return false;
-	}
-
-	ASSERT_SUCCESS(m_DirectX->Initialize(screenWidth, screenHeight, hwnd));
-
 	m_Pipeline = new RenderPipeline;
 	if (!m_Pipeline)
 	{
 		return false;
 	}
 
-	ASSERT_SUCCESS(m_Pipeline->Initialize(m_DirectX));
+	ASSERT_SUCCESS(m_Pipeline->Initialize(screenWidth, screenHeight, hwnd));
 
 	m_Camera = new CameraClass;
 	if (!m_Camera)
@@ -51,13 +42,6 @@ bool GraphicsClass::Initialize(const int& screenWidth, const int& screenHeight, 
 
 void GraphicsClass::Shutdown()
 {
-	if (m_DirectX)
-	{
-		m_DirectX->Shutdown();
-		delete m_DirectX;
-		m_DirectX = 0;
-	}
-
 	if (m_Pipeline)
 	{
 		m_Pipeline->Shutdown();

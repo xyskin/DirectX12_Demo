@@ -16,14 +16,17 @@ RenderPipeline::~RenderPipeline()
 
 }
 
-bool RenderPipeline::Initialize(DirectX12Class* directX)
+bool RenderPipeline::Initialize(const int& screenWidth, const int& screenHeight, const HWND& hwnd)
 {
-	if (!directX)
+	bool result;
+
+	m_DirectX = new DirectX12Class;
+	if (!m_DirectX)
 	{
 		return false;
 	}
 
-	m_DirectX = directX;
+	ASSERT_SUCCESS(m_DirectX->Initialize(screenWidth, screenHeight, hwnd));
 
 	return true;
 }
@@ -44,22 +47,15 @@ bool RenderPipeline::Render()
 bool RenderPipeline::RenderFrame()
 {
 	ID3D12GraphicsCommandList* commandList = m_DirectX->GetCommandList();
-	ID3D12Device* device = m_DirectX->GetDevice();
-	ID3D12DescriptorHeap* renderTargetViewHeap = m_DirectX->GetRenderTargetViewHeap();
 	Resource* backBufferRenderTarget;
 	unsigned int* bufferIndex = m_DirectX->GetBackBufferIndex();
 	backBufferRenderTarget = m_DirectX->GetBackBuffer(*bufferIndex);
 
-	unsigned int renderTargetViewDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetViewHandle = renderTargetViewHeap->GetCPUDescriptorHandleForHeapStart();
-	renderTargetViewHandle.ptr += *bufferIndex * renderTargetViewDescriptorSize;
-
 	m_DirectX->SetTransitionBarrier(backBufferRenderTarget, D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	commandList->ResourceBarrier(1, backBufferRenderTarget->barrierPtr);
-	commandList->OMSetRenderTargets(1, &renderTargetViewHandle, FALSE, NULL);
+	commandList->OMSetRenderTargets(1, &(backBufferRenderTarget->handle), FALSE, NULL);
 
 	float clearColor[4] = { 0.1f, 0.3f, 0.5f, 1 };
-	commandList->ClearRenderTargetView(renderTargetViewHandle, clearColor, 0, NULL);
+	commandList->ClearRenderTargetView(backBufferRenderTarget->handle, clearColor, 0, NULL);
 
 	return true;
 }
@@ -68,6 +64,8 @@ void RenderPipeline::Shutdown()
 {
 	if (m_DirectX)
 	{
+		m_DirectX->Shutdown();
+		delete m_DirectX;
 		m_DirectX = 0;
 	}
 }

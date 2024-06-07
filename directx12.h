@@ -109,6 +109,8 @@ public:
 		D3D12_RESOURCE_STATES currentState = resource->barrierPtr->Transition.StateAfter;
 		resource->barrierPtr->Transition.StateBefore = currentState;
 		resource->barrierPtr->Transition.StateAfter = state;
+
+		m_CommandList->ResourceBarrier(1, resource->barrierPtr);
 	}
 #pragma endregion
 
